@@ -1,0 +1,18 @@
+# Configuration file for YOLO Detector
+
+# Path to the input video file
+video_path: 'sample_video.mp4'
+
+# Frame rate for processing video frames
+frame_rate: 30
+
+# Model parameters for YOLO Detector
+model_parameters:
+  # Path to the YOLO model file
+  path: '/models/yolov8m.pt'
+  
+  # Confidence threshold for YOLO detection (between 0 and 1)
+  conf: 0.60
+  
+  # Intersection over Union (IoU) threshold for YOLO detection (between 0 and 1)
+  iou: 0.30
