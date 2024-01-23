@@ -1,5 +1,5 @@
-# Use the official NVIDIA CUDA image as the base image with version 12.3.1 for development on Ubuntu 22.04
-FROM nvidia/cuda:12.3.1-devel-ubuntu22.04
+# Use the official NVIDIA CUDA image as the base image with version 12.3.1 for development on Ubuntu 20.04
+FROM nvidia/cuda:12.3.1-devel-ubuntu20.04
 
 # Set non-interactive mode for Debian package installations
 ARG DEBIAN_FRONTEND=noninteractive
