@@ -16,7 +16,7 @@ ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all} \
 
 # Update the package index and install Python3 pip
 RUN apt-get update -y \
-    && apt-get install -y python3-pip \
+    && apt-get install -y python3-pip
     
 # Install the Ultralytics library using pip
 RUN pip install ultralytics
