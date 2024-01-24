@@ -1,4 +1,4 @@
-# Use the official NVIDIA CUDA image as the base image with version 12.3.1 for development on Ubuntu 20.04
+# Use the official NVIDIA CUDA image as the base image with version 12.3.1 for development on Ubuntu 22.04
 FROM nvidia/cuda:12.3.1-devel-ubuntu20.04
 
 # Set non-interactive mode for Debian package installations
@@ -10,14 +10,17 @@ ENV TERM=xterm
 # Add /usr/local/cuda-12.3/lib64 to the LD_LIBRARY_PATH environment variable and print the PATH
 RUN export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}; echo $PATH
 
+# Set NVIDIA_VISIBLE_DEVICES, NVIDIA_DRIVER_CAPABILITIES for GPU visibility and capabilities
 ENV NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all} \
     NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics \
     NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-# Update the package index and install Python3 pip
-RUN apt-get update -y \
-    && apt-get install -y python3-pip
-    
+# Update the package index and install project dependencies
+RUN apt-get update -y && apt-get install -y python3-pip \
+    libgl1 \
+    libglib2.0-0 \
+    x11-xserver-utils
+
 # Install the Ultralytics library using pip
 RUN pip install ultralytics
 
