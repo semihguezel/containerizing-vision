@@ -2,6 +2,7 @@
 
 # Import built-in libraries
 import os
+import time
 import threading
 
 # Import third-party packages
@@ -9,8 +10,8 @@ import cv2
 from ultralytics import YOLO
 
 # Import custom modules
-from helpers.utilities import generate_random_rgb_color_list, read_yaml_file
 from helpers.frame_queue_handler import FrameQueueHandler
+from helpers.utilities import generate_random_rgb_color_list, read_yaml_file
 
 
 class YoloDetector:
@@ -40,7 +41,7 @@ class YoloDetector:
         self.frame_rate = self.parsed_data['frame_rate']
 
         # Load a model
-        self.model = YOLO(self.parsed_data['model_parameters']['path'])
+        self.model = YOLO(current_path + self.parsed_data['model_parameters']['path'])
         self.confidence = self.parsed_data['model_parameters']['conf']
         self.iou = self.parsed_data['model_parameters']['iou']
 
@@ -58,18 +59,21 @@ class YoloDetector:
 
         This method reads frames from the input video and puts them into the frame queue for further processing.
         """
+
         cap = cv2.VideoCapture(self.video_path)
 
         while cap.isOpened():
+
             ret, frame = cap.read()
 
             if not ret:
                 break
 
-            # Adjust the playback rate by changing the delay
-            cv2.waitKey(self.frame_rate) & 0xFF
+            # # Adjust the playback rate by changing the delay
+            # cv2.waitKey(self.frame_rate) & 0xFF
 
             self.queue_handler.put(frame)
+            time.sleep(1 / self.frame_rate)
 
         cap.release()
 
@@ -84,6 +88,7 @@ class YoloDetector:
         Returns:
         - frame (numpy.ndarray): The frame with bounding boxes drawn around detected objects.
         """
+
         frame = self.queue_handler.get()
 
         results = self.model.predict(source=frame, conf=self.confidence, iou=self.iou, stream=True)
